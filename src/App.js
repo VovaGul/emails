@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import './App.css';
+import { Button, Col, Container, Row } from 'react-bootstrap';
 
 const EmailList = ({ emails, onRemoveEmail }) => {
   return (
-    <ul>
-      {emails.map((email, index) => (
-        <li key={index}>
+    emails.map((email, index) => (
+      <Row key={index} style={{ marginBottom: '5px' }}>
+        <Col>
           {email}
-          <button onClick={() => onRemoveEmail(index)}>Удалить</button>
-        </li>
-      ))}
-    </ul>
+        </Col>
+        <Col md="auto">
+        <Button onClick={() => onRemoveEmail(index)}>Удалить</Button>
+        </Col>
+      </Row>
+    ))
   );
 };
 
@@ -47,23 +50,33 @@ const App = () => {
   };
 
   return (
-    <div className="app">
-      <div>
+    <Container>
+       <Row>
+        <Col>
         <input
-          type="email"
-          id="emailInput"
-          placeholder="Введите Email"
-          value={email}
-          onChange={handleInputChange}
-          style={{ borderColor: (isValidEmail && !isDuplicateEmail) ? '' : 'red' }}
-        />
-        <button onClick={handleAddEmail}>Добавить</button>
-        {!isValidEmail && <p style={{ color: 'red' }}>Пожалуйста, введите Email адрес</p>}
-        {isDuplicateEmail && <p style={{ color: 'red' }}>Такой Email уже существует</p>}
-      </div>
-      <h3>Список</h3>
+            type="email"
+            id="emailInput"
+            placeholder="Введите Email"
+            value={email}
+            onChange={handleInputChange}
+            style={{ borderColor: (isValidEmail && !isDuplicateEmail) ? '' : 'red' }}
+          />
+        </Col>
+        <Col md="auto">
+          <Button class="btn" onClick={handleAddEmail}>Добавить</Button>
+        </Col>
+       </Row>
+       <Row>
+        <div>
+          {!isValidEmail && <p style={{ color: 'red' }}>Пожалуйста, введите Email адрес</p>}
+          {isDuplicateEmail && <p style={{ color: 'red' }}>Такой Email уже существует</p>}
+        </div>
+       </Row>
+       <Row>
+        <h3>Список</h3>
+       </Row>
       <EmailList emails={Array.from(emailList)} onRemoveEmail={handleRemoveEmail} />
-    </div>
+    </Container>
   );
 };
 
