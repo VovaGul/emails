@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import './App.css';
-import { Button, Col, Container, Row } from 'react-bootstrap';
+import { Button, Col, Container, Row, Form } from 'react-bootstrap';
 
 const EmailList = ({ emails, onRemoveEmail }) => {
   return (
     emails.map((email, index) => (
-      <Row key={index} style={{ marginBottom: '5px' }}>
+      <Row className="border rounded p-3" key={index} style={{ marginBottom: '5px' }}>
         <Col>
           {email}
         </Col>
@@ -50,10 +50,11 @@ const App = () => {
   };
 
   return (
-    <Container>
+    <Container className="mx-auto mt-4" style={{ maxWidth: '600px' }}>
        <Row>
-        <Col>
-        <input
+        <Col style={{ height: '100px' }}>
+        <>
+          <Form.Control
             type="email"
             id="emailInput"
             placeholder="Введите Email"
@@ -61,16 +62,15 @@ const App = () => {
             onChange={handleInputChange}
             style={{ borderColor: (isValidEmail && !isDuplicateEmail) ? '' : 'red' }}
           />
+          <Form.Text muted>
+            {!isValidEmail && <p style={{ color: 'red' }}>Пожалуйста, введите Email адрес</p>}
+            {isDuplicateEmail && <p style={{ color: 'red' }}>Такой Email уже существует</p>}
+          </Form.Text>
+        </>
         </Col>
         <Col md="auto">
           <Button class="btn" onClick={handleAddEmail}>Добавить</Button>
         </Col>
-       </Row>
-       <Row>
-        <div>
-          {!isValidEmail && <p style={{ color: 'red' }}>Пожалуйста, введите Email адрес</p>}
-          {isDuplicateEmail && <p style={{ color: 'red' }}>Такой Email уже существует</p>}
-        </div>
        </Row>
        <Row>
         <h3>Список</h3>
