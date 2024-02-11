@@ -16,26 +16,34 @@ const EmailList = ({ emails, onRemoveEmail }) => {
 
 const App = () => {
   const [email, setEmail] = useState('');
-  const [emailList, setEmailList] = useState([]);
+  const [emailList, setEmailList] = useState(new Set());
   const [isValidEmail, setValidEmail] = useState(true);
+  const [isDuplicateEmail, setDuplicateEmail] = useState(false);
 
   const handleInputChange = (event) => {
     setEmail(event.target.value);
+    // Проверка на валидность email при вводе
     const isValid = /\S+@\S+\.\S+/.test(event.target.value);
     setValidEmail(isValid);
+    // Проверка на уникальность email при вводе
+    const isDuplicate = emailList.has(event.target.value);
+    setDuplicateEmail(isDuplicate);
   };
 
   const handleAddEmail = () => {
     if (isValidEmail && email.trim() !== '') {
-      setEmailList([...emailList, email]);
-      setEmail('');
+      // Проверка на уникальность email перед добавлением
+      if (!emailList.has(email)) {
+        setEmailList(new Set([...emailList, email]));
+        setEmail('');
+      }
     }
   };
 
   const handleRemoveEmail = (index) => {
-    const newEmailList = [...emailList];
+    const newEmailList = Array.from(emailList);
     newEmailList.splice(index, 1);
-    setEmailList(newEmailList);
+    setEmailList(new Set(newEmailList));
   };
 
   return (
@@ -49,12 +57,13 @@ const App = () => {
           placeholder="Enter email"
           value={email}
           onChange={handleInputChange}
-          style={{ borderColor: isValidEmail ? '' : 'red' }}
+          style={{ borderColor: (isValidEmail && !isDuplicateEmail) ? '' : 'red' }}
         />
         {!isValidEmail && <p style={{ color: 'red' }}>Please enter a valid email address</p>}
+        {isDuplicateEmail && <p style={{ color: 'red' }}>Email already exists in the list</p>}
         <button onClick={handleAddEmail}>Add</button>
       </div>
-      <EmailList emails={emailList} onRemoveEmail={handleRemoveEmail} />
+      <EmailList emails={Array.from(emailList)} onRemoveEmail={handleRemoveEmail} />
     </div>
   );
 };
