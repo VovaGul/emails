@@ -1,7 +1,20 @@
 import React, { useState } from 'react';
 import './App.css';
 
-function App() {
+const EmailList = ({ emails, onRemoveEmail }) => {
+  return (
+    <ul>
+      {emails.map((email, index) => (
+        <li key={index}>
+          {email}
+          <button onClick={() => onRemoveEmail(index)}>Remove</button>
+        </li>
+      ))}
+    </ul>
+  );
+};
+
+const App = () => {
   const [email, setEmail] = useState('');
   const [emailList, setEmailList] = useState([]);
 
@@ -36,16 +49,9 @@ function App() {
         />
         <button onClick={handleAddEmail}>Add</button>
       </div>
-      <ul>
-        {emailList.map((emailItem, index) => (
-          <li key={index}>
-            {emailItem}
-            <button onClick={() => handleRemoveEmail(index)}>Remove</button>
-          </li>
-        ))}
-      </ul>
+      <EmailList emails={emailList} onRemoveEmail={handleRemoveEmail} />
     </div>
   );
-}
+};
 
 export default App;
