@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './App.css'; // Создайте файл App.css для стилей
+import './App.css';
 
 function App() {
   const [email, setEmail] = useState('');
@@ -12,8 +12,14 @@ function App() {
   const handleAddEmail = () => {
     if (email.trim() !== '') {
       setEmailList([...emailList, email]);
-      setEmail(''); // Очистка поля ввода после добавления
+      setEmail('');
     }
+  };
+
+  const handleRemoveEmail = (index) => {
+    const newEmailList = [...emailList];
+    newEmailList.splice(index, 1);
+    setEmailList(newEmailList);
   };
 
   return (
@@ -32,7 +38,10 @@ function App() {
       </div>
       <ul>
         {emailList.map((emailItem, index) => (
-          <li key={index}>{emailItem}</li>
+          <li key={index}>
+            {emailItem}
+            <button onClick={() => handleRemoveEmail(index)}>Remove</button>
+          </li>
         ))}
       </ul>
     </div>
