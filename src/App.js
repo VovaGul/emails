@@ -17,13 +17,16 @@ const EmailList = ({ emails, onRemoveEmail }) => {
 const App = () => {
   const [email, setEmail] = useState('');
   const [emailList, setEmailList] = useState([]);
+  const [isValidEmail, setValidEmail] = useState(true);
 
   const handleInputChange = (event) => {
     setEmail(event.target.value);
+    const isValid = /\S+@\S+\.\S+/.test(event.target.value);
+    setValidEmail(isValid);
   };
 
   const handleAddEmail = () => {
-    if (email.trim() !== '') {
+    if (isValidEmail && email.trim() !== '') {
       setEmailList([...emailList, email]);
       setEmail('');
     }
@@ -46,7 +49,9 @@ const App = () => {
           placeholder="Enter email"
           value={email}
           onChange={handleInputChange}
+          style={{ borderColor: isValidEmail ? '' : 'red' }}
         />
+        {!isValidEmail && <p style={{ color: 'red' }}>Please enter a valid email address</p>}
         <button onClick={handleAddEmail}>Add</button>
       </div>
       <EmailList emails={emailList} onRemoveEmail={handleRemoveEmail} />
