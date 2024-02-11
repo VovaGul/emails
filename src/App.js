@@ -35,11 +35,8 @@ const App = () => {
 
   const handleAddEmail = () => {
     if (isValidEmail && !isDuplicateEmail && email.trim() !== '') {
-      // Проверка на уникальность email перед добавлением
-      if (!emailList.has(email)) {
-        setEmailList(new Set([...emailList, email]));
-        setEmail('');
-      }
+      setEmailList(new Set([...emailList, email]));
+      setEmail('');
     }
   };
 
