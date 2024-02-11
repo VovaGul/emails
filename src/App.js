@@ -7,7 +7,7 @@ const EmailList = ({ emails, onRemoveEmail }) => {
       {emails.map((email, index) => (
         <li key={index}>
           {email}
-          <button onClick={() => onRemoveEmail(index)}>Remove</button>
+          <button onClick={() => onRemoveEmail(index)}>Удалить</button>
         </li>
       ))}
     </ul>
@@ -31,7 +31,7 @@ const App = () => {
   };
 
   const handleAddEmail = () => {
-    if (isValidEmail && email.trim() !== '') {
+    if (isValidEmail && !isDuplicateEmail && email.trim() !== '') {
       // Проверка на уникальность email перед добавлением
       if (!emailList.has(email)) {
         setEmailList(new Set([...emailList, email]));
@@ -48,9 +48,7 @@ const App = () => {
 
   return (
     <div className="app">
-      <h1>Email List</h1>
       <div>
-        <label htmlFor="emailInput">Add Email:</label>
         <input
           type="email"
           id="emailInput"
@@ -59,10 +57,11 @@ const App = () => {
           onChange={handleInputChange}
           style={{ borderColor: (isValidEmail && !isDuplicateEmail) ? '' : 'red' }}
         />
-        {!isValidEmail && <p style={{ color: 'red' }}>Please enter a valid email address</p>}
-        {isDuplicateEmail && <p style={{ color: 'red' }}>Email already exists in the list</p>}
-        <button onClick={handleAddEmail}>Add</button>
+        <button onClick={handleAddEmail}>Добавить</button>
+        {!isValidEmail && <p style={{ color: 'red' }}>Пожалуйста, введите Email адрес</p>}
+        {isDuplicateEmail && <p style={{ color: 'red' }}>Такой Email уже существует</p>}
       </div>
+      <h3>Список</h3>
       <EmailList emails={Array.from(emailList)} onRemoveEmail={handleRemoveEmail} />
     </div>
   );
