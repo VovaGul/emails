@@ -52,7 +52,7 @@ const App = () => {
         <input
           type="email"
           id="emailInput"
-          placeholder="Enter email"
+          placeholder="Введите Email"
           value={email}
           onChange={handleInputChange}
           style={{ borderColor: (isValidEmail && !isDuplicateEmail) ? '' : 'red' }}
